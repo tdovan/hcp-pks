@@ -1,4 +1,4 @@
-    ############################
+    ########   deploy Metallb L2 only ############
     mkdir metallb-hcp
     cd metallb-hcp/
     cat config.yaml
@@ -26,7 +26,7 @@
     k describe -n metallb-system configmaps config
     
 
-    ############################
+    ######### Deploy Traefik ##########
     git clone https://github.com/jear/kubernetes-local-cluster-flannel-metallb-traefik.git
     
     
