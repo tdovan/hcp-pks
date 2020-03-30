@@ -25,7 +25,7 @@
     k get -n metallb-system configmaps
     k describe -n metallb-system configmaps config
     
-    
+
     ############################
     git clone https://github.com/jear/kubernetes-local-cluster-flannel-metallb-traefik.git
     
@@ -37,14 +37,18 @@
     kubectl apply -f traefik/traefik-definition.yaml
     kubectl apply -f traefik/traefik-deployment.yaml
     
-    
     # Add DNS entry with traefik loadbalancer EXTERNAL-IP 
     k get svc -n traefik
     NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
     traefik             LoadBalancer   10.96.28.89    192.168.1.180   80:32500/TCP   6m54s
     traefik-dashboard   ClusterIP      10.96.31.147   <none>          8080/TCP       6m53s
-        
-        
+    
+    ########### Example DNS forward Zone #########
+    root@pri:~# cat /etc/bind/for.jear.co
+    traefik-pks     A       192.168.1.220
+    traefik-hcp     A       192.168.1.180
+    
+           
         
     cat traefik/traefik-ingress-dashboard.yaml
     ---
