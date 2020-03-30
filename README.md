@@ -49,7 +49,7 @@
     traefik-hcp     A       192.168.1.180
     
            
-        
+    ########### add Ingress route for traefik Dashboard #########
     cat traefik/traefik-ingress-dashboard.yaml
     ---
     apiVersion: traefik.containo.us/v1alpha1
