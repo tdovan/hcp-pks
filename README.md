@@ -40,14 +40,14 @@
     
     # Add DNS entry with traefik loadbalancer EXTERNAL-IP 
     k get svc -n traefik
-        NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
-        traefik             LoadBalancer   10.96.28.89    192.168.1.180   80:32500/TCP   6m54s
-        traefik-dashboard   ClusterIP      10.96.31.147   <none>          8080/TCP       6m53s
+    NAME                TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
+    traefik             LoadBalancer   10.96.28.89    192.168.1.180   80:32500/TCP   6m54s
+    traefik-dashboard   ClusterIP      10.96.31.147   <none>          8080/TCP       6m53s
         
         
         
-        cat traefik/traefik-ingress-dashboard.yaml
-        ---
+    cat traefik/traefik-ingress-dashboard.yaml
+    ---
     apiVersion: traefik.containo.us/v1alpha1
     kind: IngressRoute
     metadata:
