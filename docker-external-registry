@@ -1,0 +1,2 @@
+06_operators.sh:    HPECPAGENT_REPO="docker.io/bluedata"
+06_operators.sh:    KUBEDIRECTOR_REPO="docker.io/bluek8s"
