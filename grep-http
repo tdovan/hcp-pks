@@ -1,0 +1,136 @@
+yum install -y --disablerepo=epel 'bluedata-bdmgmt-*.el7' 'bluedata-webui-*.el7' 'bluedata-datatap-*.el7' 'bluedata-bdconfig-*.el7' 'openvswitch-2.5.2-1.el7*' yum-utils sos python-requests python-requests-kerberos python-argparse python-boto python-urllib3 policycoreutils-python python-dateutil ceph-common httpd mod_ssl mod_wsgi django chrony bind-utils bc lvm2 parted autofs rpcbind libcgroup-tools psmisc nfs-utils python-ipaddr python-iniparse patch curl wget openssh-clients python-setuptools createrepo openldap-clients docker selinux-policy python-devel python-cffi python-virtualenv python-dateutil libxml2-devel libxslt-devel openssl-devel device-mapper-persistent-data dnsmasq haproxy socat
+
+
+https://s3.amazonaws.com/bluedata-catalog/bundles/catalog/external/docker/EPIC-5.0/feeds/feed.json
+https://bdk8s.s3.amazonaws.com/5.0/k8s_manifest.json
+
+curl --connect-timeout 10 --silent --head http://s3.amazonaws.com/ --proxy ''
+
+
+[root@hpecp-ctrl-1 etc]# grep http yum.conf
+bugtracker_url=http://bugs.centos.org/set_project.php?project_id=23&ref=http://bugs.centos.org/bug_report_page.php?category=yum
+
+[root@hpecp-ctrl-1 repos]# pwd
+/opt/bluedata/bundles/bluedata-epic-entdoc-minimal-release-5.0-3006/repos
+
+[root@hpecp-ctrl-1 repos]# ll
+total 0
+lrwxrwxrwx. 1 root apache 35 Mar 31 21:22 bluedata -> /opt/bluedata/repositories/bluedata
+lrwxrwxrwx. 1 root apache 32 Mar 31 21:22 epel7 -> /opt/bluedata/repositories/epel7
+
+/opt/bluedata/bundles/bluedata-epic-entdoc-minimal-release-5.0-3006/repos 
+/opt/bluedata/repositories
+
+[root@hpecp-ctrl-1 tmp]# cat /opt/bluedata/repositories/bluedata/
+bluedata-agent-5.0-3006.el6.x86_64.rpm         bluedata-datatap-5.0-3006.el6.x86_64.rpm       epel-release-7-10.noarch.rpm
+bluedata-agent-5.0-3006.el7.x86_64.rpm         bluedata-datatap-5.0-3006.el7.x86_64.rpm       openvswitch-2.5.0-1.x86_64.rpm
+bluedata-bdconfig-5.0-3006.el6.x86_64.rpm      bluedata-troubleshoot-5.0-3006.el6.x86_64.rpm  openvswitch-2.5.2-1.el7.centos.x86_64.rpm
+bluedata-bdconfig-5.0-3006.el7.x86_64.rpm      bluedata-troubleshoot-5.0-3006.el7.x86_64.rpm  repodata/
+bluedata-bdmgmt-5.0-3006.el6.x86_64.rpm        bluedata-webui-5.0-3006.el6.x86_64.rpm
+bluedata-bdmgmt-5.0-3006.el7.x86_64.rpm        bluedata-webui-5.0-3006.el7.x86_64.rpm
+
+http://mirrorlist.centos.org/
+http://debuginfo.centos.org/
+http://vault.centos.org/centos/
+
+[root@hpecp-ctrl-1 yum.repos.d]# grep -R http
+CentOS-Base.repo:mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra
+CentOS-Base.repo:#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+CentOS-Base.repo:mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra
+CentOS-Base.repo:#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
+CentOS-Base.repo:mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra
+CentOS-Base.repo:#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
+CentOS-Base.repo:mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra
+CentOS-Base.repo:#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
+CentOS-CR.repo:baseurl=http://mirror.centos.org/centos/$releasever/cr/$basearch/
+CentOS-Debuginfo.repo:baseurl=http://debuginfo.centos.org/7/$basearch/
+CentOS-Sources.repo:baseurl=http://vault.centos.org/centos/$releasever/os/Source/
+CentOS-Sources.repo:baseurl=http://vault.centos.org/centos/$releasever/updates/Source/
+CentOS-Sources.repo:baseurl=http://vault.centos.org/centos/$releasever/extras/Source/
+CentOS-Sources.repo:baseurl=http://vault.centos.org/centos/$releasever/centosplus/Source/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.0.1406/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.0.1406/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.0.1406/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.0.1406/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.0.1406/fasttrack/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.1.1503/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.1.1503/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.1.1503/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.1.1503/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.1.1503/fasttrack/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.2.1511/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.2.1511/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.2.1511/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.2.1511/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.2.1511/fasttrack/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.3.1611/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.3.1611/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.3.1611/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.3.1611/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.3.1611/fasttrack/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.4.1708/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.4.1708/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.4.1708/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.4.1708/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.4.1708/fasttrack/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.5.1804/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.5.1804/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.5.1804/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.5.1804/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.5.1804/fasttrack/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.6.1810/os/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.6.1810/updates/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.6.1810/extras/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.6.1810/centosplus/$basearch/
+CentOS-Vault.repo:baseurl=http://vault.centos.org/7.6.1810/fasttrack/$basearch/
+CentOS-fasttrack.repo:mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=fasttrack&infra=$infra
+CentOS-fasttrack.repo:#baseurl=http://mirror.centos.org/centos/$releasever/fasttrack/$basearch/
+epel-testing.repo:#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch
+epel-testing.repo:metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-epel7&arch=$basearch
+epel-testing.repo:#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/$basearch/debug
+epel-testing.repo:metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel7&arch=$basearch
+epel-testing.repo:#baseurl=http://download.fedoraproject.org/pub/epel/testing/7/SRPMS
+epel-testing.repo:metalink=https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel7&arch=$basearch
+epel.repo:#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+epel.repo:metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch
+epel.repo:#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug
+epel.repo:metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&arch=$basearch
+epel.repo:#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS
+epel.repo:metalink=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&arch=$basearch
+
+
+
+[root@hpecp-ctrl-1 repos]# cd /opt/bluedata/repositories/epel7
+[root@hpecp-ctrl-1 epel7]# ll
+total 20232
+-rw-r-xr--. 1 root apache   14848 Mar 31 21:21 epel-release-7-10.noarch.rpm
+-rw-r-xr--. 1 root apache   53108 Mar 31 21:21 iftop-1.0-0.14.pre4.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   69564 Mar 31 21:21 iperf-2.0.10-1.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache  229864 Mar 31 21:21 libtomcrypt-1.17-23.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   36196 Mar 31 21:21 libtommath-0.42.0-4.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache 1857136 Mar 31 21:21 nagios-4.3.2-8.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   23044 Mar 31 21:21 nagios-common-4.3.2-8.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache  257068 Mar 31 21:21 nagios-plugins-2.2.1-4git.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   33920 Mar 31 21:21 nagios-plugins-dummy-2.2.1-4git.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   61260 Mar 31 21:21 nagios-plugins-http-2.2.1-4git.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   40108 Mar 31 21:21 nagios-plugins-nagios-2.2.1-4git.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   38948 Mar 31 21:21 nagios-plugins-nrpe-3.1.1-1.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   45716 Mar 31 21:21 nagios-plugins-ping-2.2.1-4git.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   45160 Mar 31 21:21 nagios-plugins-procs-2.2.1-4git.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   26500 Mar 31 21:21 nagios-selinux-4.3.2-8.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache   38980 Mar 31 21:21 nethogs-0.8.5-1.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache  256360 Mar 31 21:21 nrpe-3.1.1-1.el7.x86_64.rpm
+-rw-r-xr--. 1 root apache 1831452 Mar 31 21:21 python2-boto-2.45.0-3.el7.noarch.rpm
+-rw-r-xr--. 1 root apache  487816 Mar 31 21:21 python2-crypto-2.6.1-13.el7.x86_64.rpm
+-rwxr-xr-x. 1 root apache 4408445 Mar 31 21:21 python2-django-1.11.13-4.el7.noarch.rpm
+-rwxr-xr-x. 1 root apache 4412021 Mar 31 21:21 python2-django-1.11.27-1.el7.noarch.rpm
+-rw-r-xr--. 1 root apache   85404 Mar 31 21:21 python2-ecdsa-0.13-4.el7.noarch.rpm
+-rw-r-xr--. 1 root apache  263744 Mar 31 21:21 python2-paramiko-1.16.1-2.el7.noarch.rpm
+-rw-r-xr--. 1 root apache 1749308 Mar 31 21:21 python2-pip-8.1.2-5.el7.noarch.rpm
+-rw-r-xr--. 1 root apache   69076 Mar 31 21:21 python2-rsa-3.4.1-1.el7.noarch.rpm
+-rw-r-xr--. 1 root apache 4159628 Mar 31 21:21 python-django-1.6.11.6-1.el7.noarch.rpm
+-rwxr-xr-x. 1 root apache    9697 Mar 31 21:21 python-django-bash-completion-1.11.13-4.el7.noarch.rpm
+-rwxr-xr-x. 1 root apache   10689 Mar 31 21:21 python-django-bash-completion-1.11.27-1.el7.noarch.rpm
+-rw-r-xr--. 1 root apache   16788 Mar 31 21:21 python-django-bash-completion-1.6.11.6-1.el7.noarch.rpm
+-rw-r-xr--. 1 root apache   17136 Mar 31 21:21 python-requests-kerberos-0.7.0-2.el7.noarch.rpm
+drwxr-xr-x. 2 root apache    4096 Mar 31 21:21 repodata
