@@ -1,10 +1,10 @@
 #!/bin/sh
 # variables
-PKS_DIRECTOR=10.12.25.3
-PKS_OPSMGR_FQDN=10.12.25.2
+PKS_DIRECTOR=IPBOSHDIRECTORPKS
+PKS_OPSMGR_FQDN=opsmgr-pks-calico.sandbox.foundry.sii24.pole-emploi.intra
 DOTK="-k"
 ADMIN="admin"
-PASSWORD="yLbCwEGXXth3PQm9bYFf"
+PASSWORD="PASSWORDOPSMANAGER"
 PKS_CACRT="ca.pks.crt"
 
 # get certificat pks opsmgr
