@@ -28,3 +28,18 @@ Get https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
     Successfully authenticated with UAA
     
     Succeeded
+
+
+[root@cp-c0 ~]# pks login -a pks-api.tdovan.co -u zinsou --ca-cert ./ops-manager.ca
+
+Password: ***********
+API Endpoint: pks-api.tdovan.co
+User: zinsou
+Login successful.
+
+[root@cp-c0 ~]# pks clusters
+
+PKS Version    Name           k8s Version  Plan Name  UUID                                  Status     Action
+1.6.1-build.6  pks-cluster-0  1.15.5       Small      c6be0edf-6b77-48ed-a802-2d9c2bc91a00  succeeded  CREATE
+
+
