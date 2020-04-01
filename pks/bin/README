@@ -1,6 +1,6 @@
 # troubleshooting from within the HCP ctrl
 
-# https://tanzu.vmware.com/content/blog/bosh-fundamentals-for-pks 
+https://tanzu.vmware.com/content/blog/bosh-fundamentals-for-pks 
 
 Get https://github.com/cloudfoundry/bosh-cli/releases
 Get https://github.com/pivotal-cf/om/releases
