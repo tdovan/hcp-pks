@@ -1,2 +1,6 @@
-https://github.com/cloudfoundry/bosh-cli/releases
-https://github.com/pivotal-cf/om/releases
+# troubleshooting from within the HCP ctrl
+
+Get https://github.com/cloudfoundry/bosh-cli/releases
+Get https://github.com/pivotal-cf/om/releases
+
+yum install jsoup #( to get jq )
