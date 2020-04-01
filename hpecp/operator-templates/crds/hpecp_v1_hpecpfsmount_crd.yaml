@@ -1,0 +1,76 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: hpecpfsmounts.hpecp.hpe.com
+spec:
+  group: hpecp.hpe.com
+  version: v1
+  names:
+    kind: HPECPFsMount
+    listKind: HPECPFsMountList
+    plural: hpecpfsmounts
+    singular: hpecpfsmount
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      type: object
+      required: [apiVersion, kind, metadata, spec]
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          type: object
+          required: [fsType, mountDirName]
+          properties:
+            fsType:
+              type: string
+            mountDirName:
+              type: string
+              pattern: '^[a-zA-Z0-9._-]+$'
+            mountOptions:
+              type: string
+            nfsMount:
+              type: object
+              nullable: true
+              required: [server, share]
+              properties:
+                server:
+                  type: string
+                  minLength: 1
+                share:
+                  type: string
+                  minLength: 1
+            bindMount:
+              type: object
+              nullable: true
+              required: [hostPath]
+              properties:
+                hostPath:
+                  type: string
+                  pattern: '^/.*'
+          oneOf:
+            - properties:
+                fsType:
+                  pattern: 'nfs'
+              required: [fsType, nfsMount]
+            - properties:
+                fsType:
+                  pattern: 'bind'
+              required: [fsType, bindMount]
+        status:
+          type: object
+          nullable: true
+          properties:
+            generationUid:
+              type: string
+            state:
+              type: string
+            mountStatus:
+              type: object
+              nullable: true

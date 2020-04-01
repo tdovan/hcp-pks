@@ -1,0 +1,253 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: kubedirectorclusters.kubedirector.hpe.com
+spec:
+  group: kubedirector.hpe.com
+  version: v1beta1
+  names:
+    kind: KubeDirectorCluster
+    listKind: KubeDirectorClusterList
+    plural: kubedirectorclusters
+    singular: kubedirectorcluster
+    shortNames:
+      - kdcluster
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      type: object
+      required: [apiVersion, kind, metadata, spec]
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          type: object
+          required: [app, roles]
+          properties:
+            app:
+              type: string
+              minLength: 1
+            appCatalog:
+              type: string
+              pattern: '^local$|^system$'
+            serviceType:
+              type: string
+              pattern: '^ClusterIP$|^NodePort$|^LoadBalancer$'
+            defaultSecret:
+              type: object
+              nullable: true
+              required: [name, mountPath]
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                mountPath:
+                  type: string
+                  minLength: 1
+                  pattern: '^/[a-zA-Z0-9\/-_]*'
+                defaultMode:
+                  type: integer
+                  maximum: 511
+                readOnly:
+                  type: boolean
+            roles:
+              type: array
+              items:
+                type: object
+                required: [id, resources]
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                    maxLength: 63
+                    pattern: '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?'
+                  podLabels:
+                    type: object
+                    nullable: true
+                  serviceLabels:
+                    type: object
+                    nullable: true
+                  members:
+                    type: integer
+                    minimum: 0
+                  secret:
+                    type: object
+                    nullable: true
+                    required: [name, mountPath]
+                    properties:
+                      name:
+                        type: string
+                        minLength: 1
+                      mountPath:
+                        type: string
+                        minLength: 1
+                        pattern: '^/[a-zA-Z0-9\/-_]*'
+                      defaultMode:
+                        type: integer
+                        maximum: 511
+                      readOnly:
+                        type: boolean
+                  resources:
+                    type: object
+                    required: [limits]
+                    properties:
+                      limits:
+                        type: object
+                        required: [memory, cpu]
+                        properties:
+                          memory:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                          cpu:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                          nvidia.com/gpu:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                          amd.com/gpu:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                          ephemeral-storage:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                      requests:
+                        type: object
+                        nullable: true
+                        properties:
+                          memory:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                          cpu:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                          ephemeral-storage:
+                            type: string
+                            pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                  env:
+                    type: array
+                    items:
+                      type: object
+                      required: [name, value]
+                      properties:
+                        name:
+                          type: string
+                          minLength: 1
+                        value:
+                          type: string
+                  storage:
+                    type: object
+                    nullable: true
+                    required: [size]
+                    properties:
+                      size:
+                        type: string
+                        pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                      storageClassName:
+                        type: string
+                        minLength: 1
+                  fileInjections:
+                    type: array
+                    items:
+                      type: object
+                      required: [srcURL, destDir]
+                      properties:
+                        srcURL:
+                          type: string
+                          pattern: '^https?://.+$'
+                        destDir:
+                          type: string
+                          pattern: '^/.*$'
+                          minLength: 1
+                        permissions:
+                          type: object
+                          nullable: true
+                          properties:
+                            fileMode:
+                              type: integer
+                            fileOwner:
+                              type: string
+                            fileGroup:
+                              type: string
+        status:
+          type: object
+          nullable: true
+          properties:
+            state:
+              type: string
+            memberStateRollup:
+              type: object
+              properties:
+                membershipChanging:
+                  type: boolean
+                membersDown:
+                  type: boolean
+                membersInitializing:
+                  type: boolean
+                membersWaiting:
+                  type: boolean
+                membersRestarting:
+                  type: boolean
+                configErrors:
+                  type: boolean
+            generationUID:
+              type: string
+            specGenerationToProcess:
+              type: integer
+            clusterService:
+              type: string
+            lastNodeID:
+              type: integer
+            roles:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  statefulSet:
+                    type: string
+                  members:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pod:
+                          type: string
+                        nodeID:
+                          type: integer
+                        service:
+                          type: string
+                        pvc:
+                          type: string
+                        state:
+                          type: string
+                        stateDetail:
+                          type: object
+                          properties:
+                            configErrorDetail:
+                              type: string
+                            lastConfigDataGeneration:
+                              type: integer
+                            lastSetupGeneration:
+                              type: integer
+                            configuringContainer:
+                              type: string
+                            lastConfiguredContainer:
+                              type: string
+                            lastKnownContainerState:
+                              type: string
+                            pendingNotifyCmds:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  arguments:
+                                    type: array
+                                    items:
+                                      type: string

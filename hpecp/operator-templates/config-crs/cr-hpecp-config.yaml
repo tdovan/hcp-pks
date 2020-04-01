@@ -1,0 +1,10 @@
+apiVersion: "hpecp.hpe.com/v1"
+kind: "HPECPConfig"
+metadata:
+  name: "hpecp-global-config"
+spec:
+  mgmtSessionSecretName: "hpecp-session-secret"
+  fsMount:
+    enabled: true
+    hostPath: /opt/bluedata/share
+  unrestrictedFsMountNamespaces: ["hpecp"]

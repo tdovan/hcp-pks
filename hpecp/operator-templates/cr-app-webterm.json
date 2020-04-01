@@ -1,0 +1,52 @@
+{
+    "apiVersion": "kubedirector.hpe.com/v1beta1",
+    "kind": "KubeDirectorApp",
+    "metadata": {
+        "name" : "webterm"
+    },
+
+    "spec" : {
+        "defaultPersistDirs" : ["/home"],
+        "config": {
+            "roleServices": [
+                {
+                    "serviceIDs": [
+                        "webterm"
+                    ],
+                    "roleID": "webterm"
+                }
+            ],
+            "selectedRoles": [
+                "webterm"
+            ]
+        },
+        "label": {
+            "name": "Webterm Utility",
+            "description": "Webterm Utility running webterm service"
+        },
+        "distroID": "bluedata/webterm",
+        "version": "2.2",
+        "configSchemaVersion": 7,
+        "services": [
+            {
+                "endpoint": {
+                    "urlScheme": "http",
+                    "port": 9000,
+                    "isDashboard": false
+                },
+                "id": "webterm",
+                "label": {
+                    "name": "webterm"
+                }
+            }
+        ],
+        "defaultImageRepoTag": "docker.io/bluedata/webterm:2.2",
+        "defaultConfigPackage": null,
+        "roles": [
+            {
+                "cardinality": "1",
+                "id": "webterm"
+            }
+        ]
+    }
+}

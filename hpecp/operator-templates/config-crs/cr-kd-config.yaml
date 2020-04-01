@@ -1,0 +1,9 @@
+apiVersion: "kubedirector.hpe.com/v1beta1"
+kind: "KubeDirectorConfig"
+metadata:
+  name: "kd-global-config"
+spec:
+  defaultServiceType: "NodePort"
+  nativeSystemdSupport: false
+  requiredSecretPrefix: "kd-"
+  clusterSvcDomainBase: .svc.cluster.local

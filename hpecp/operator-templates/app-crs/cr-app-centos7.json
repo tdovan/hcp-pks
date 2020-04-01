@@ -1,0 +1,52 @@
+{
+    "apiVersion": "kubedirector.hpe.com/v1beta1",
+    "kind": "KubeDirectorApp",
+    "metadata": {
+        "name" : "centos7x"
+    },
+
+    "spec" : {
+        "systemdRequired": true,
+        "defaultPersistDirs" : ["/home"],
+        "config": {
+            "roleServices": [
+                {
+                    "serviceIDs": [
+                        "ssh"
+                    ],
+                    "roleID": "vanilla_centos"
+                }
+            ],
+            "selectedRoles": [
+                "vanilla_centos"
+            ]
+        },
+        "label": {
+            "name": "CentOS 7.5",
+            "description": "CentOS 7.5.1804 with no preinstalled apps"
+        },
+        "distroID": "bluedata/centos7x",
+        "version": "1.1",
+        "configSchemaVersion": 7,
+        "services": [
+            {
+                "endpoint": {
+                    "port": 22,
+                    "isDashboard": false
+                },
+                "id": "ssh",
+                "label": {
+                    "name": "SSH"
+                }
+            }
+        ],
+        "defaultImageRepoTag": "docker.io/bluedata/centos7:4.1",
+        "defaultConfigPackage": null,
+        "roles": [
+            {
+                "cardinality": "1+",
+                "id": "vanilla_centos"
+            }
+        ]
+    }
+}

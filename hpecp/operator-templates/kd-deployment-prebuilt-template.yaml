@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubedirector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: kubedirector
+  template:
+    metadata:
+      labels:
+        name: kubedirector
+    spec:
+      # This priorityClassName is only supported outside of kube-system in
+      # K8s version 1.17.
+      #priorityClassName: system-cluster-critical
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+          key: node-role.kubernetes.io/master
+        - key: CriticalAddonsOnly
+          operator: Exists
+      containers:
+        - name: kubedirector
+          image: @@@@BLUEK8S_KUBEDIRECTOR@@@@/kubedirector:0.4.0
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          ports:
+          - containerPort: 60000
+            name: metrics
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MY_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "kubedirector"
+      serviceAccountName: kubedirector

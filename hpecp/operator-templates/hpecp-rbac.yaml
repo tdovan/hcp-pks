@@ -1,0 +1,130 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hpecp-agent
+rules:
+- apiGroups:
+  - hpecp.hpe.com
+  resources:
+  - "*"
+  verbs:
+  - "*"
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  - rolebindings
+  verbs:
+  - "*"
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - networkpolicies
+  verbs:
+  - "*"
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - namespaces
+  - resourcequotas
+  - serviceaccounts
+  - services
+  - endpoints
+  - events
+  - configmaps
+  - secrets
+  - pods/exec
+  verbs:
+  - "*"
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  verbs:
+  - "*"
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - replicasets
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  verbs:
+  - "get"
+  - "create"
+- apiGroups:
+  - settings.k8s.io
+  resources:
+  - podpresets
+  verbs:
+  - "get"
+  - "create"
+  - "delete"
+  - "list"
+  - "watch"
+
+---
+
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: hpecp-agent
+
+---
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hpecp-agent
+subjects:
+- kind: ServiceAccount
+  name: hpecp-agent
+  namespace: hpecp
+roleRef:
+  kind: ClusterRole
+  name: hpecp-agent
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hpecp-fsmount
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - "list"
+
+---
+
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: hpecp-fsmount
+
+---
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hpecp-fsmount
+subjects:
+- kind: ServiceAccount
+  name: hpecp-fsmount
+  namespace: hpecp
+roleRef:
+  kind: ClusterRole
+  name: hpecp-fsmount
+  apiGroup: rbac.authorization.k8s.io
+

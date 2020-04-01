@@ -1,0 +1,150 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: hpecptenants.hpecp.hpe.com
+spec:
+  group: hpecp.hpe.com
+  version: v1
+  names:
+    kind: HPECPTenant
+    listKind: HPECPTenantList
+    plural: hpecptenants
+    singular: hpecptenant
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      type: object
+      required: [apiVersion, kind, metadata, spec]
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          type: object
+          required: [rbacs]
+          properties:
+            namespaceName:
+              type: string
+              minLength: 1
+              maxLength: 63
+              pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+            adoptExistingNamespace:
+              type: boolean
+            isNamespaceOwner:
+              type: boolean
+            mapServicesOnGateway:
+              type: boolean
+            resourcesQuota:
+              type: object
+              nullable: true
+              properties:
+                limits:
+                  type: object
+                  nullable: true
+                  properties:
+                    memory:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                    cpu:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                    nvidia.com/gpu:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                    amd.com/gpu:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                    ephemeral-storage:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                requests:
+                  type: object
+                  nullable: true
+                  properties:
+                    memory:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                    cpu:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+                    ephemeral-storage:
+                      type: string
+                      pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+            storageQuota:
+              type: string
+              pattern: '^([0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$'
+            rbacs:
+              type: array
+              items:
+                type: object
+                required: [roleID, rules]
+                properties:
+                  roleID:
+                    type: string
+                    minlength : 1
+                  rules:
+                    type: array
+                    items:
+                      type: object
+                      required: [verbs]
+                      properties:
+                        verbs:
+                          type: array
+                          items:
+                            type: string
+                        apiGroups:
+                          type: array
+                          items:
+                            type: string
+                        resources:
+                          type: array
+                          items:
+                            type: string
+                        resourceNames:
+                          type: array
+                          items:
+                            type: string
+                        nonResourceURLs:
+                          type: array
+                          items:
+                            type: string
+        status:
+          type: object
+          nullable: true
+          properties:
+            state:
+              type: string
+            generationUID:
+              type: string
+            namespace:
+              type: string
+            networkPolicy:
+              type: string
+            resourceQuota:
+              type: string
+            serviceAccount:
+              type: string
+            tenantPodPreset:
+              type: string
+            systemPodPreset:
+              type: string
+            roleMetas:
+              type: array
+              items:
+                type: object
+                properties:
+                  roleID:
+                    type: string
+                  roleStatus:
+                    type: string
+                  roleName:
+                    type: string
+                  roleBinding:
+                    type: string
+                  roleGroup:
+                    type: string
