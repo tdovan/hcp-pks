@@ -1,7 +1,7 @@
 #!/bin/sh
 # variables
 PKS_DIRECTOR=IPBOSHDIRECTORPKS
-PKS_OPSMGR_FQDN=opsmgr-pks-calico.sandbox.foundry.sii24.pole-emploi.intra
+PKS_OPSMGR_FQDN=
 DOTK="-k"
 ADMIN="admin"
 PASSWORD="PASSWORDOPSMANAGER"
