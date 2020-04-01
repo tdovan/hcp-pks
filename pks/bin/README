@@ -4,3 +4,27 @@ Get https://github.com/cloudfoundry/bosh-cli/releases
 Get https://github.com/pivotal-cf/om/releases
 Get https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 
+    [root@cp-c0 ~]# ./bosh-access.sh
+    Using environment '10.12.25.3' as anonymous user
+    
+    Name               p-bosh
+    UUID               b918dc90-8e47-4193-bb47-bec889ba6fb0
+    Version            270.10.0 (00000000)
+    Director Stemcell  ubuntu-xenial/621.29
+    CPI                vsphere_cpi
+    Features           compiled_package_cache: disabled
+                       config_server: enabled
+                       local_dns: enabled
+                       power_dns: disabled
+                       snapshots: disabled
+    User               (not logged in)
+    
+    Succeeded
+    Using environment '10.12.25.3'
+    
+    Email (): director
+    Password ():
+    
+    Successfully authenticated with UAA
+    
+    Succeeded
