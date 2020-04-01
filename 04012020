@@ -1,0 +1,12 @@
+CentOS 7.5 + upgrade : pour le POC -> OK
+Registry: la BU a deja des clients qui utilisent Artifactory (en node cache/proxy) -> OK
+
+
+Au sujet des points evoques dans les mails precedents, voici la doc officielle:
+pour la partie du fichier de feed sur AWS S3:
+http://docs.bluedata.com/50_manually-adding-an-app-store-image
+
+
+pour install Air-gap
+http://docs.bluedata.com/50_k8s-airgap-requirements
+
