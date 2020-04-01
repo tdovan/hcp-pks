@@ -2,5 +2,5 @@
 
 Get https://github.com/cloudfoundry/bosh-cli/releases
 Get https://github.com/pivotal-cf/om/releases
+Get https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
 
-yum install jsoup #( to get jq )
